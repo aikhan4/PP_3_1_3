@@ -40,7 +40,7 @@ public class UsersController {
     @PostMapping(value = "/add")
     public String addUser(@ModelAttribute("user") User user, BindingResult bindingResult, Model model, @RequestParam String role) {
 
-        context.getBean("userValidator", UserValidator.class).validate(user, bindingResult);
+        context.getBean("userValidator", UserValidator.class).addValidate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("bindingResult", bindingResult);
@@ -51,24 +51,7 @@ public class UsersController {
             return "addUser";
         }
 
-        if (role.equals("ADMIN")) {
-            Role adminRole = context.getBean("roleService", RoleService.class).findById((long) 1).get();
-            Role userRole = context.getBean("roleService", RoleService.class).findById((long) 2).get();
-            user.addRole(adminRole);
-            user.addRole(userRole);
-            adminRole.addUser(user);
-            userRole.addUser(user);
-        } else if (role.equals("USER")) {
-            Role userRole = context.getBean("roleService", RoleService.class).findById((long) 2).get();
-            user.addRole(userRole);
-            userRole.addUser(user);
-        } else if (role.isEmpty()) {
-            Role userRole = context.getBean("roleService", RoleService.class).findById((long) 2).get();
-            user.addRole(userRole);
-            userRole.addUser(user);
-        }
-
-        context.getBean("userService", UserService.class).save(user);
+        context.getBean("userService", UserService.class).save(user, role);
 
         return "redirect:/admin";
     }
@@ -83,9 +66,9 @@ public class UsersController {
     }
 
     @PatchMapping(value = "/change")
-    public String changeUser(@ModelAttribute User user, Model model, @RequestParam String role, BindingResult bindingResult) {
+    public String changeUser(@ModelAttribute User user, Model model, @RequestParam String role, BindingResult bindingResult, @RequestParam(value = "oldEmail") String oldEmail) {
 
-        context.getBean("userValidator", UserValidator.class).validate(user, bindingResult);
+        context.getBean("userValidator", UserValidator.class).changeValidate(user, bindingResult, oldEmail);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("bindingResult", bindingResult);
@@ -96,24 +79,7 @@ public class UsersController {
             return "changeUser";
         }
 
-        if (role.equals("ADMIN")) {
-            Role adminRole = context.getBean("roleService", RoleService.class).findById((long) 1).get();
-            Role userRole = context.getBean("roleService", RoleService.class).findById((long) 2).get();
-            user.addRole(adminRole);
-            user.addRole(userRole);
-            adminRole.addUser(user);
-            userRole.addUser(user);
-        } else if (role.equals("USER")) {
-            Role userRole = context.getBean("roleService", RoleService.class).findById((long) 2).get();
-            user.addRole(userRole);
-            userRole.addUser(user);
-        } else if (role.isEmpty()) {
-            Role userRole = context.getBean("roleService", RoleService.class).findById((long) 2).get();
-            user.addRole(userRole);
-            userRole.addUser(user);
-        }
-
-        context.getBean("userService", UserService.class).save(user);
+        context.getBean("userService", UserService.class).save(user, role);
 
         return "redirect:/admin";
     }

@@ -20,13 +20,26 @@ public class UserValidator {
         this.userService = userService;
     }
 
-    public void validate(User authTryUser, Errors errors) throws UsernameNotFoundException {
+    public void addValidate(User authTryUser, Errors errors) throws UsernameNotFoundException {
+        Optional<User> user = userService.findByEmail(authTryUser.getEmail());
+        if (user.isPresent()) {
+            errors.rejectValue("email", "Пользователь с таким логином уже существует");
+        }
+        if ((authTryUser.getAge() == null) || (authTryUser.getAge() < 0) || (authTryUser.getAge() > 127)) {
+            errors.rejectValue("age", "Некорректный возраст");
+        }
+    }
+    public void changeValidate(User authTryUser, Errors errors, String oldEmail) throws UsernameNotFoundException {
         Optional<User> user = userService.findByEmail(authTryUser.getEmail());
         if ((authTryUser.getAge() == null) || (authTryUser.getAge() < 0) || (authTryUser.getAge() > 127)) {
             errors.rejectValue("age", "Некорректный возраст");
         }
         if (user.isPresent()) {
-            errors.rejectValue("email", "Пользователь с таким логином уже существует");
+            if (user.get().getEmail().equals(oldEmail)) {
+
+            } else {
+                errors.rejectValue("email", "Пользователь с таким логином уже существует");
+            }
         }
     }
 }
