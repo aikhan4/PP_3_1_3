@@ -301,12 +301,18 @@
 
                                 <div class="item">
                                     <label for="age">Age</label>
-                                    <input type="text" th:field="*{age}" id="age"/>
+                                    <input type="number" th:field="*{age}" id="age"/>
+                                    <div th:if="${bindingResult.hasFieldErrors('age')}">
+                                        <p>Некорректный возраст, попробуйте создать пользователя с другим возрастом</p>
+                                    </div>
                                 </div>
 
                                 <div class="item">
                                     <label for="email">Email</label>
                                     <input type="text" th:field="*{email}" id="email"/>
+                                    <div th:if="${bindingResult.hasFieldErrors('email')}">
+                                        <p>Пользователь с таким логином уже существует, попробуйте создать пользователя с другим логином</p>
+                                    </div>
                                 </div>
 
                                 <div class="item">
@@ -322,20 +328,15 @@
                                     </select>
                                 </div>
                             </div>
+                        </form>
                             <div class="bottomButtons">
                                 <div class="closeButton">
-                                    <form th:action="@{/admin}" th:method="get">
-                                        <input type="submit" value="Close">
-                                    </form>
+                                    <a th:href="@{/admin}">Close</a>
                                 </div>
                                 <div class="createButton">
                                     <input type="submit" value="Edit"/>
                                 </div>
                             </div>
-                            <!--                            <div th:if="${error.hasErrors()}">-->
-                            <!--                                <p>Пользователь с таким логином уже существует, попробуйте создать пользователя с другим логином</p>-->
-                            <!--                            </div>-->
-                        </form>
                     </div>
                 </div>
             </div>

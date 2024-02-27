@@ -29,8 +29,8 @@ public class AppInit implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        User user = new User("ayhan", "kasumov",  (long) 18, "akasum99@gmail.com", "123");
         if (userService.findAll().isEmpty()) {
-            User user = new User("ayhan", "kasumov", (byte) 18, "akasum99@gmail.com", "123");
             Role roleAdmin = new Role("ROLE_ADMIN");
             Role roleUser = new Role("ROLE_USER");
             user.addRole(roleAdmin);

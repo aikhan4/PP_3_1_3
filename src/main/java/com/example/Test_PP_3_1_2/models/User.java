@@ -17,7 +17,7 @@ public class User {
     @Column
     private String lastName;
     @Column
-    private Byte age;
+    private Long age;
     @Column
     private String email;
     @Column
@@ -33,7 +33,7 @@ public class User {
 
     }
 
-    public User(String firstName, String lastName, Byte age, String email, String password) {
+    public User(String firstName, String lastName, Long age, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -74,11 +74,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Byte getAge() {
+    public Long getAge() {
         return age;
     }
 
-    public void setAge(Byte age) {
+    public void setAge(Long age) {
         this.age = age;
     }
 

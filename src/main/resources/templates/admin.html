@@ -184,12 +184,12 @@
     <div class="headerInner">
         <div class="userInfo">
             <div class="item">
-                <p th:text="${user.getEmail()}"></p>
+                <p th:text="${cookieUser.getEmail()}"></p>
             </div>
             <div class="item">
                 <p> with roles: </p>
             </div>
-            <div th:each="role : ${user.getRoles()}" class="item">
+            <div th:each="role : ${cookieUser.getRoles()}" class="item">
                 <p th:text="${role.getRolename().substring(5)}"></p>
             </div>
         </div>
