@@ -24,10 +24,13 @@ public class UserWrapper implements UserDetails {
     @Override
     @Transactional
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
         for (Role role : user.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.getRolename()));
         }
+
         return authorities;
     }
 

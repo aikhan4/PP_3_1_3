@@ -15,7 +15,6 @@ import java.util.Optional;
 @Service
 @Transactional
 public class UserServiceToConfig implements UserDetailsService {
-
     private UserRepository userRepository;
 
     public UserServiceToConfig(@Autowired UserRepository userRepository) {
@@ -23,10 +22,14 @@ public class UserServiceToConfig implements UserDetailsService {
     }
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+
         Optional<User> user = userRepository.findByEmail(s);
+
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("пользователь не существует");
         }
+
         return new UserWrapper(user.get());
     }
+
 }

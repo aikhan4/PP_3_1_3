@@ -33,11 +33,15 @@ public class UserService{
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
+
     public User save(User user, String role) {
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         if (role.equals("ADMIN")) {
             Role adminRole = applicationContext.getBean("roleService", RoleService.class).findById((long) 1).get();
             Role userRole = applicationContext.getBean("roleService", RoleService.class).findById((long) 2).get();
@@ -57,10 +61,13 @@ public class UserService{
 
         return userRepository.save(user);
     }
+
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
+
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
+
 }
