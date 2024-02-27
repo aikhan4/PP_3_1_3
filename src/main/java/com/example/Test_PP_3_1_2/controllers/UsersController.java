@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UsersController {
-    @Autowired
+
     private ApplicationContext context;
+
+    public UsersController(@Autowired ApplicationContext context) {
+        this.context = context;
+    }
 
     @GetMapping(value = "/admin")
     public String users(Model model) {
@@ -29,6 +33,7 @@ public class UsersController {
         model.addAttribute("cookieUser", user);
         return "admin";
     }
+
     @GetMapping(value = "/add")
     public String addUserPage(@ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         model.addAttribute("bindingResult", bindingResult);
@@ -37,6 +42,7 @@ public class UsersController {
         model.addAttribute("cookieUser", cookieUser);
         return "addUser";
     }
+
     @PostMapping(value = "/add")
     public String addUser(@ModelAttribute("user") User user, BindingResult bindingResult, Model model, @RequestParam String role) {
 
@@ -55,6 +61,7 @@ public class UsersController {
 
         return "redirect:/admin";
     }
+
     @GetMapping(value = "/change")
     public String changeUserPage(@ModelAttribute User user, @RequestParam Long id, Model model, BindingResult bindingResult) {
         model.addAttribute("user", context.getBean("userService", UserService.class).findById(id).get());
@@ -66,7 +73,7 @@ public class UsersController {
     }
 
     @PatchMapping(value = "/change")
-    public String changeUser(@ModelAttribute User user, Model model, @RequestParam String role, BindingResult bindingResult, @RequestParam(value = "oldEmail") String oldEmail) {
+    public String changeUser(@ModelAttribute User user, Model model, @RequestParam String role, BindingResult bindingResult, @RequestParam String oldEmail) {
 
         context.getBean("userValidator", UserValidator.class).changeValidate(user, bindingResult, oldEmail);
 
@@ -83,11 +90,13 @@ public class UsersController {
 
         return "redirect:/admin";
     }
+
     @DeleteMapping(value = "/delete")
     public String deleteUser(@RequestParam Long id) {
         context.getBean("userService", UserService.class).deleteById(id);
         return "redirect:/admin";
     }
+
     @GetMapping(value = "/user")
     public String userPage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -96,6 +105,7 @@ public class UsersController {
 
         return "userInfo";
     }
+
     @GetMapping(value = "/AdminInfo")
     public String adminInfo(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -104,4 +114,5 @@ public class UsersController {
 
         return "adminInfo";
     }
+
 }
