@@ -57,7 +57,7 @@ public class UsersController {
             return "addUser";
         }
 
-        context.getBean("userService", UserService.class).save(user, role);
+        context.getBean("userService", UserService.class).saveWhenAdd(user, role);
 
         return "redirect:/admin";
     }
@@ -86,7 +86,7 @@ public class UsersController {
             return "changeUser";
         }
 
-        context.getBean("userService", UserService.class).save(user, role);
+        context.getBean("userService", UserService.class).saveWhenChange(user, role);
 
         return "redirect:/admin";
     }

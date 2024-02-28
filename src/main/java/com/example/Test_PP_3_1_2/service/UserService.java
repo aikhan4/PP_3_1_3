@@ -38,9 +38,35 @@ public class UserService{
         return userRepository.findAll();
     }
 
-    public User save(User user, String role) {
+    public User saveWhenAdd(User user, String role) {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        if (role.equals("ADMIN")) {
+            Role adminRole = applicationContext.getBean("roleService", RoleService.class).findById((long) 1).get();
+            Role userRole = applicationContext.getBean("roleService", RoleService.class).findById((long) 2).get();
+            user.addRole(adminRole);
+            user.addRole(userRole);
+            adminRole.addUser(user);
+            userRole.addUser(user);
+        } else if (role.equals("USER")) {
+            Role userRole = applicationContext.getBean("roleService", RoleService.class).findById((long) 2).get();
+            user.addRole(userRole);
+            userRole.addUser(user);
+        } else if (role.isEmpty()) {
+            Role userRole = applicationContext.getBean("roleService", RoleService.class).findById((long) 2).get();
+            user.addRole(userRole);
+            userRole.addUser(user);
+        }
+
+        return userRepository.save(user);
+    }
+
+    public User saveWhenChange(User user, String role) {
+
+        if (!(user.getPassword().equals(findById(user.getId()).get().getPassword()))) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
 
         if (role.equals("ADMIN")) {
             Role adminRole = applicationContext.getBean("roleService", RoleService.class).findById((long) 1).get();
