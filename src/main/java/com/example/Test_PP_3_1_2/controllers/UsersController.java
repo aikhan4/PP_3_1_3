@@ -73,9 +73,9 @@ public class UsersController {
     }
 
     @PatchMapping(value = "/change")
-    public String changeUser(@ModelAttribute User user, Model model, @RequestParam String role, BindingResult bindingResult, @RequestParam String oldEmail) {
+    public String changeUser(@ModelAttribute User user, Model model, @RequestParam String role, BindingResult bindingResult) {
 
-        context.getBean("userValidator", UserValidator.class).changeValidate(user, bindingResult, oldEmail);
+        context.getBean("userValidator", UserValidator.class).changeValidate(user, bindingResult);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("bindingResult", bindingResult);
